@@ -61,6 +61,10 @@ if __name__ == '__main__':
         '--no-wrap-pages', dest='no_wrap_pages', action='store_true',
         help="Do not wrap the pages in a separate file. Results will vary for each reader."
     )
+    parser.add_option(
+        '--right-to-left', dest='right_to_left', action='store_true',
+        help="Set the ePub to read from right to left instead of left to right."
+    )
     (options, args) = parser.parse_args()
 
     if options.wrap_pages and options.no_wrap_pages:
@@ -83,7 +87,8 @@ if __name__ == '__main__':
             EPubMaker(
                 master=None, input_dir=path, file=path.parent.joinpath(path.name + '.epub'), name=path.name or "Output",
                 grayscale=options.grayscale, max_width=options.max_width, max_height=options.max_height,
-                progress=CmdProgress(options.progress), wrap_pages=not options.no_wrap_pages
+                progress=CmdProgress(options.progress), wrap_pages=not options.no_wrap_pages,
+                right_to_left=options.right_to_left
             ).run()
     elif options.input_dir and options.file and options.name:
         if options.cmd:
@@ -94,13 +99,13 @@ if __name__ == '__main__':
                 master=None, input_dir=options.input_dir, file=options.file, name=options.name,
                 grayscale=options.grayscale, max_width=options.max_width,
                 max_height=options.max_height, progress=CmdProgress(options.progress),
-                wrap_pages=not options.no_wrap_pages
+                wrap_pages=not options.no_wrap_pages, right_to_left=options.right_to_left
             ).run()
         else:
             import _Gui
 
             _Gui.start_gui(input_dir=options.input_dir, file=options.file, name=options.name,
                            grayscale=options.grayscale, max_width=options.max_width, max_height=options.max_height,
-                           wrap_pages=not options.no_wrap_pages)
+                           wrap_pages=not options.no_wrap_pages, right_to_left=options.right_to_left)
     else:
         parser.print_help()

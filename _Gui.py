@@ -40,7 +40,7 @@ def validate(condition, entry, result):
 
 class MainFrame(tk.Frame):
     def __init__(self, _master, input_dir=None, file=None, name="", grayscale=False, max_width=None, max_height=None,
-                 wrap_pages=True):
+                 wrap_pages=True, right_to_left=False):
         tk.Frame.__init__(self, master=_master, width=525, height=200)
         self.master.protocol("WM_DELETE_WINDOW", self.close)
         self.generic_queue = Queue()
@@ -107,13 +107,16 @@ class MainFrame(tk.Frame):
 
         # options
         options_frame = tk.Frame(panel)
-        options_frame.grid(row=4, column=0, columnspan=2, pady=3)
+        options_frame.grid(row=4, column=0, columnspan=3, pady=3)
         self.grayscale = tk.BooleanVar(value=grayscale)
         self.grayscale_entry = tk.Checkbutton(options_frame, text="Grayscale", variable=self.grayscale)
         self.grayscale_entry.grid(row=0, column=0, padx=5)
         self.wrap_pages = tk.BooleanVar(value=wrap_pages)
         self.wrap_pages_entry = tk.Checkbutton(options_frame, text="Wrap pages", variable=self.wrap_pages)
         self.wrap_pages_entry.grid(row=0, column=1, padx=5)
+        self.right_to_left = tk.BooleanVar(value=right_to_left)
+        self.right_to_left_entry = tk.Checkbutton(options_frame, text="Right to Left", variable=self.right_to_left)
+        self.right_to_left_entry.grid(row=0, column=2, padx=5)
 
         # progress
         progress = tk.Frame(panel)
@@ -179,6 +182,7 @@ class MainFrame(tk.Frame):
                 master=self, input_dir=self.input_dir, file=self.file, name=self.name.get(),
                 wrap_pages=self.wrap_pages.get(), max_width=int(max_width) if max_width else None,
                 max_height=int(max_height) if max_height else None, grayscale=self.grayscale.get(),
+                right_to_left=self.right_to_left.get()
             )
             self.thread.start()
         else:

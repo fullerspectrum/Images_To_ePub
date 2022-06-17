@@ -76,7 +76,7 @@ class Chapter:
 
 
 class EPubMaker(threading.Thread):
-    def __init__(self, master, input_dir, file, name, wrap_pages, grayscale, max_width, max_height, progress=None):
+    def __init__(self, master, input_dir, file, name, wrap_pages, grayscale, max_width, max_height, right_to_left, progress=None):
         threading.Thread.__init__(self)
         self.master = master
         self.progress = None
@@ -101,6 +101,7 @@ class EPubMaker(threading.Thread):
         self.max_width = max_width
         self.max_height = max_height
         self.wrap_pages = wrap_pages
+        self.right_to_left = right_to_left
 
     def run(self):
         try:
@@ -230,7 +231,7 @@ class EPubMaker(threading.Thread):
         out = out or name
         data = data or {
             "name": self.name, "uuid": self.uuid, "cover": self.cover, "chapter_tree": self.chapter_tree,
-            "images": self.images, "wrap_pages": self.wrap_pages,
+            "images": self.images, "wrap_pages": self.wrap_pages, "right_to_left": self.right_to_left
         }
         self.zip.writestr(out, self.template_env.get_template(name + '.jinja2').render(data))
 
